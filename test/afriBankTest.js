@@ -1,10 +1,11 @@
-const { expect } = require("chai");
+const { expect, assert } = require("chai");
 const { SigningKey } = require("ethers/lib/utils");
 const { ethers } = require("hardhat");
-const assert = require( "truffle-assertions");
+require('chai').use(require('chai-as-promised')).should()
+
 
 describe("Test AfriBank variables", async function () {
-    let afriBank, AfriBank, signers,deployerAdd,balance;
+    let afriBank, AfriBank, signers,deployerAdd;
   before(async function () {
     signers = await ethers.getSigners();
  
@@ -32,15 +33,10 @@ describe("Test AfriBank variables", async function () {
   it("Should show insufficient balance ", async function () {
     deployerAdd = signers[0].address;
     console.log(deployerAdd);
-    await AfriBank.withdraw( 30000, deployerAdd );
-    expect(await AfriBank.balance( deployerAdd )).to.equal("18000");
+    await AfriBank.withdraw( 30000, deployerAdd ).should.be.rejected;
 
-    // console.log("User 1 Balance is:", deployerAdd.toString());
-    // expect(deployerAdd).to.equal(18000);
-    // expect(deployerAdd).to.equal("insufficient balance");
-    // await assert.reverts(
-    //     "ERC20: balance must exceed withdrawer"
-    // )
+    
+  
   });
 })
 
